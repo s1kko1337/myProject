@@ -5,7 +5,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), selectedRect(nullptr), point1(nullptr), isImageLoaded(false), isPointed(false),
       isMovingRect(false),rHeihgt(1.0),rWidth(1.0),currentScaleFactor(1.0), isPanning(false),isRectTool(false), isRulerTool(false),
-      selectedPath(nullptr),point2(nullptr)
+      selectedLine(nullptr),point2(nullptr),textItem(nullptr)
 
 {
     ui->setupUi(this);
@@ -15,10 +15,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->graphicsView->installEventFilter(this);
 
-
     logTextEdit = ui->logTextEd;
+    logFolderPath = "logs";
 
-    logFile.setFileName("log.txt");
+    QDir().mkpath(logFolderPath);
+
+    logFileName = logFolderPath + "/log_" + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss") + ".txt";
+
+    logFile.setFileName(logFileName);
     if (logFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QTextStream logStream(&logFile);
@@ -34,11 +38,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setMouseTracking(true);
 
     connect(ui->loadImageMenu, SIGNAL(triggered()), this, SLOT(onLoadImageButtonClicked()));
+    connect(ui->openLogFile, SIGNAL(triggered()), this, SLOT(onOpenFileButtonClicked()));
     connect(ui->loadImageButton, SIGNAL(clicked()), this, SLOT(onLoadImageButtonClicked()));
     connect(ui->zoomButton, SIGNAL(clicked()), this, SLOT(zoomIn()));
     connect(ui->unZoomButton, SIGNAL(clicked()), this, SLOT(zoomOut()));
     connect(ui->rulerButton, SIGNAL(clicked()), this, SLOT(chooseRuler()));
     connect(ui->rectButton, SIGNAL(clicked()), this, SLOT(chooseRect()));
+    connect(ui->delRuler, SIGNAL(clicked()), this, SLOT(delToolRuler()));
+    connect(ui->delRect, SIGNAL(clicked()), this, SLOT(delToolRect()));
 }
 
 MainWindow::~MainWindow()
@@ -54,20 +61,30 @@ void MainWindow::onLoadImageButtonClicked()
 
     if (!filePath.isEmpty())
     {
-
         debugEvent(1);
 
-        delete point1;
-        delete selectedRect;
-        point1 = nullptr;
-        selectedRect = nullptr;
+
+        if (point1)
+        {
+            scene->removeItem(point1);
+            delete point1;
+            point1 = nullptr;
+        }
+
+        if (selectedRect)
+        {
+            scene->removeItem(selectedRect);
+            delete selectedRect;
+            selectedRect = nullptr;
+        }
+
         displayImage(filePath);
     }
 }
 
 void MainWindow::chooseRect()
 {
-    if (isImageLoaded)
+    if (isImageLoaded == true)
     {
         if(isRectTool)
         {
@@ -79,6 +96,10 @@ void MainWindow::chooseRect()
             isRectTool = true;
             isRulerTool = false;
         }
+    }
+    else
+    {
+        return;
     }
 }
 
@@ -97,6 +118,10 @@ void MainWindow::chooseRuler()
             isRectTool = false;
         }
     }
+    else
+    {
+        return;
+    }
 }
 
 void MainWindow::displayImage(const QString &filePath)
@@ -105,7 +130,16 @@ void MainWindow::displayImage(const QString &filePath)
     scene->clear();
     scene->addPixmap(QPixmap::fromImage(image));
 
+    QRectF sceneRect = ui->graphicsView->sceneRect();
+
+    while (sceneRect.width() < image.width() && sceneRect.height() < image.height()) {
+        zoomOut();
+        sceneRect = ui->graphicsView->sceneRect();
+    }
+
     isImageLoaded = true;
+    sceneRect = ui->graphicsView->sceneRect();
+
     int totalPixels = image.width() * image.height();
     int totalIntensity = 0;
     int minIntensity = 255;
@@ -193,18 +227,24 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     if(isRulerTool)
     {
         {
-            if(selectedRect)
-            {
-                point1 = nullptr;
-                scene->removeItem(selectedRect);
-                delete selectedRect;
-                selectedRect = nullptr;
-            }
-
             if (event->type() == QEvent::GraphicsSceneMousePress)
             {
                 QGraphicsSceneMouseEvent *sceneEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
 
+                if(selectedLine)
+                {
+                    delete selectedLine;
+                    selectedLine = nullptr;
+
+                    delete point1;
+                    point1 = nullptr;
+
+                    delete point2;
+                    point2 = nullptr;
+
+                    delete textItem;
+                    textItem = nullptr;
+                }
                 if (sceneEvent->button() == Qt::LeftButton)
                 {
                     if (!isImageLoaded)
@@ -275,43 +315,55 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
                 QPainterPath path;
 
-                path.moveTo(point1->x(), point1->y());
-                path.lineTo(point2->x(), point2->y());
-                path.closeSubpath();
+                selectedLine = new QGraphicsLineItem();
+                selectedLine->setLine(point1->pos().x(),point1->pos().y(),point2->pos().x(),point2->pos().y());
+                QLineF line = selectedLine->line();
 
-                QPen pen(Qt::SolidLine);
-                pen.setWidth(3);
 
-                selectedPath = new QGraphicsPathItem(path);
-                scene->addItem(selectedPath);
+                int length = line.length();
 
-                scene->removeItem(point1);
-                delete point1;
-                point1 = nullptr;
+                QPen pen;
+                pen.setColor(QColor(158, 158, 158, 158));
+                pen.setWidth(2);
+                pen.setStyle(Qt::DashLine);
+
+                selectedLine->setPen(pen);
+
+                textItem = new QGraphicsTextItem();
+                textItem->setPlainText(QString::number(length) + "px");
+
+                QFont font;
+                font.setPointSize(10);
+                textItem->setFont(font);
+                textItem->setDefaultTextColor(QColor(Qt::red));
+
+                QPointF textPos = selectedLine->line().pointAt(0.5);
+                textItem->setPos(textPos.x() - textItem->boundingRect().width()/2,
+                                 textPos.y() - textItem->boundingRect().height()/2);
+
+                scene->addItem(selectedLine);
+                scene->addItem(textItem);
+
+
             }
         }
         return false;
     }
-
     if(isRectTool)
     {
+        if(point1&&point2)
+        {
+            scene->removeItem(point1);
+            delete point1;
+            point1 = nullptr;
+
+            scene->removeItem(point2);
+            delete point2;
+            point2 = nullptr;
+        }
         if (event->type() == QEvent::GraphicsSceneMousePress)
         {
             QGraphicsSceneMouseEvent *sceneEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
-
-            if (sceneEvent->button() == Qt::RightButton)
-            {
-                QMessageBox::StandardButton reply;
-                reply = QMessageBox::question(this, "Выход", "Вы уверены, что хотите выйти?", QMessageBox::Yes|QMessageBox::No);
-
-                if (reply == QMessageBox::Yes)
-                {
-                    debugEvent(2);
-                    QApplication::quit();
-                }
-                return false;
-
-            }
 
 
             if (sceneEvent->button() == Qt::LeftButton)
@@ -332,7 +384,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                     QPointF currPos = sceneEvent->scenePos();
                     qreal x = qBound<qreal>(0, currPos.x(), image.width());
                     qreal y = qBound<qreal>(0, currPos.y(), image.height());
-                    point1 = new QGraphicsEllipseItem(0, 0, 0, 0);
+                    point1 = new QGraphicsEllipseItem(-1.5, -1.5, 3, 3);
+                    point1->setBrush(Qt::red);
                     scene->addItem(point1);
                     point1->setPos(x, y);
 
@@ -425,13 +478,14 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
             debugEvent(8);
 
+
+            point2 = new QGraphicsEllipseItem(-1.5, -1.5, 3, 3);
+            point2->setBrush(Qt::red);
+            scene->addItem(point2);
+            point2->setPos(currPos);
+
             selectedRect->setBrush(QBrush(QColor(128, 128, 128, 128)));
             calculateIntens(selectedRect);
-
-            scene->removeItem(point1);
-            delete point1;
-
-            point1 = nullptr;
         }
     }
     return false;
@@ -474,66 +528,123 @@ void MainWindow::calculateIntens(QGraphicsRectItem *rectItem)
 
 void MainWindow::debugEvent(int event)
 {
+    QTextStream logStream(&logFile);
     switch(event)
     {
     case 1:
         if(filePathFS != nullptr)
         {
-            QString logMessage = "Загружено изображение: " + filePathFS;
-            logTextEdit->append(logMessage);
-            QTextStream logStream(&logFile);
+            QString logMessage = getCurrentDateTime() + " " +"Загружено изображение: " + filePathFS;
             logStream << logMessage << "\n";
-
+            logTextEdit->append(logMessage);
         }
         break;
     case 2:
-    {QString logMessage1 = "Действие: нажатие пкм.";
-        QString logMessage2 = "Действие: выход из приложения.";
+    {
+        QString logMessage1 = getCurrentDateTime() + " " + "Действие: нажатие пкм.";
+        QString logMessage2 = getCurrentDateTime() + " " + "Действие: выход из приложения.";
+        logStream << logMessage1 << "\n" <<logMessage2<< "\n";
         logTextEdit->append(logMessage2);
-        QTextStream logStream2(&logFile);
-        logStream2 << logMessage1 << "\n" <<logMessage2<< "\n";}
+    }
         break;
 
     case 3:
-    {QString logMessage3 = "Ошибка: нажата лкм при незагруженном изображении.";
+    {
+        QString logMessage3 = getCurrentDateTime()+ " " + "Ошибка: нажата лкм при незагруженном изображении.";
+        logStream << logMessage3 << "\n";
         logTextEdit->append(logMessage3);
-        QTextStream logStream3(&logFile);
-        logStream3 << logMessage3 << "\n"; }
+    }
         break;
     case 4:
-    {QString logMessage4 = "Действие: создана центральная точка с координатами(x,y): " +
+    {
+        QString logMessage4 = getCurrentDateTime()+ " " + "Действие: создана центральная точка с координатами(x,y): " +
                 QString::number(point1->pos().x()) + "," +
                 QString::number(point1->pos().y());
+        logStream << logMessage4<< "\n";
         logTextEdit->append(logMessage4);
-        QTextStream logStream4(&logFile);
-        logStream4 << logMessage4<< "\n";}
+    }
         break;
     case 5:
-    { QString logMessage5 = "Ошибка: прямоугольник задан линией";
+    {
+        QString logMessage5 = getCurrentDateTime() + " " +"Ошибка: прямоугольник задан линией";
         logTextEdit->append(logMessage5);
-        QTextStream logStream5(&logFile);
-        logStream5 << logMessage5 << "\n";}
+        logStream << logMessage5 << "\n";
+    }
         break;
     case 6:
-    { QString logMessage6 = "Действие: точка удалена";
+    {
+        QString logMessage6 = getCurrentDateTime() + " " +"Действие: точка удалена";
         logTextEdit->append(logMessage6);
-        QTextStream logStream6(&logFile);
-        logStream6 << logMessage6 << "\n";}
+        logStream << logMessage6 << "\n";
+    }
         break;
     case 7:
-    { QString logMessage7 = "Действие: прямоугольник удален";
+    {
+        QString logMessage7 = getCurrentDateTime() + " " +"Действие: прямоугольник удален";
         logTextEdit->append(logMessage7);
-        QTextStream logStream7(&logFile);
-        logStream7 << logMessage7 << "\n";}
+        logStream << logMessage7 << "\n";
+    }
         break;
     case 8:
-    {  QString logMessage = "Действие: создан прямоугольник с координатами(x,y) и размерами(высота, ширина): " +
+    {
+        QString logMessage = getCurrentDateTime() + " " + "Действие: создан прямоугольник с координатами(x,y) и размерами(высота, ширина): " +
                 QString::number(point1->pos().x()) + "," +
                 QString::number(point1->pos().y()) + " " +
                 QString::number(selectedRect->boundingRect().height()) + "," +
                 QString::number(selectedRect->boundingRect().width());
         logTextEdit->append(logMessage);
-        QTextStream logStream(&logFile);
-        logStream << logMessage<< "\n";}
+        logStream << logMessage<< "\n";
+    }
         break;
-    }}
+    }
+}
+
+void MainWindow::delToolRect()
+{
+    if(selectedRect)
+    {
+        delete selectedRect;
+        selectedRect = nullptr;
+
+        ui->minLabel->setText("Мин. инт. : 0");
+        ui->maxLabel->setText("Макс. инт. : 0");
+        ui->avgLabel->setText("Средн. инт. : 0");
+    }
+
+}
+
+void MainWindow::delToolRuler()
+{    if(selectedLine)
+    {
+        delete point1;
+        point1 = nullptr;
+
+        delete point2;
+        point2 = nullptr;
+
+        delete selectedLine;
+        selectedLine = nullptr;
+
+        delete textItem;
+        textItem = nullptr;
+    }
+}
+
+
+QString MainWindow::getCurrentDateTime()
+{
+    return QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss");
+}
+
+void MainWindow::onOpenFileButtonClicked()
+{
+    QString filePath = logFileName;
+
+    QUrl fileUrl = QUrl::fromLocalFile(filePath);
+
+    if (!fileUrl.isEmpty()) {
+        QDesktopServices::openUrl(fileUrl);
+    } else {
+        qDebug() << "Некорректный путь к файлу!";
+    }
+}

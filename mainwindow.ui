@@ -42,8 +42,26 @@ border-radius: 10px;
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <item alignment="Qt::AlignHCenter">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item alignment="Qt::AlignRight|Qt::AlignTop">
        <widget class="QFrame" name="frame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true">font: 10pt &quot;Sans Serif&quot;;
 border-radius:10px;
@@ -169,101 +187,318 @@ border-radius: 4px;
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>Инструменты:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <layout class="QVBoxLayout" name="mainInstruments">
              <property name="topMargin">
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="rulerButton">
-               <property name="styleSheet">
-                <string notr="true">background:rgb(220,220,220);
-border:2px solid rgb(185,185,185);
-border-radius: 4px;</string>
-               </property>
+              <widget class="QLabel" name="label">
                <property name="text">
-                <string>Линейка</string>
+                <string>Инструменты:</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="rectButton">
-               <property name="styleSheet">
-                <string notr="true">background:rgb(220,220,220);
+              <layout class="QGridLayout" name="gridLayout">
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <item row="1" column="0">
+                <widget class="QPushButton" name="rulerButton">
+                 <property name="styleSheet">
+                  <string notr="true">background:rgb(220,220,220);
 border:2px solid rgb(185,185,185);
 border-radius: 4px;</string>
-               </property>
-               <property name="text">
-                <string>Прямоугольник</string>
-               </property>
-              </widget>
+                 </property>
+                 <property name="text">
+                  <string>Линейка</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QPushButton" name="rectButton">
+                 <property name="styleSheet">
+                  <string notr="true">background:rgb(220,220,220);
+border:2px solid rgb(185,185,185);
+border-radius: 4px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Прямоугольник</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QPushButton" name="delRuler">
+                 <property name="minimumSize">
+                  <size>
+                   <width>21</width>
+                   <height>21</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>21</width>
+                   <height>21</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Sans Serif</family>
+                   <pointsize>10</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background:rgb(220,220,220);
+border:2px solid rgb(185,185,185);
+border-radius: 4px;</string>
+                 </property>
+                 <property name="text">
+                  <string>x</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QPushButton" name="delRect">
+                 <property name="minimumSize">
+                  <size>
+                   <width>21</width>
+                   <height>21</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>21</width>
+                   <height>21</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Sans Serif</family>
+                   <pointsize>10</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background:rgb(220,220,220);
+border:2px solid rgb(185,185,185);
+border-radius: 4px;
+</string>
+                 </property>
+                 <property name="text">
+                  <string>x</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
           </layout>
          </item>
          <item>
-          <widget class="QWidget" name="RectIntens" native="true">
-           <property name="styleSheet">
-            <string notr="true"/>
+          <layout class="QGridLayout" name="mainIntens">
+           <property name="topMargin">
+            <number>0</number>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QLabel" name="minLabel">
-              <property name="text">
-               <string>Мин. инт. : 0</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="maxLabel">
-              <property name="text">
-               <string>Макс. инт. : 0</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="avgLabel">
-              <property name="text">
-               <string>Средн. инт. : 0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="allPngIntens" native="true">
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <item>
-             <widget class="QLabel" name="minAllLabel">
-              <property name="text">
-               <string>П макс. инт. : 0</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="maxAllLabel">
-              <property name="text">
-               <string>П мин. инт. : 0</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="avgAllLabel">
-              <property name="text">
-               <string>П сред. инт. : 0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item row="1" column="0">
+            <widget class="QWidget" name="RectIntens" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>175</width>
+               <height>90</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>90</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background:rgb(220,220,220);
+border:2px solid rgb(185,185,185);
+border-radius: 4px;</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QLabel" name="intTypeRECT">
+                <property name="font">
+                 <font>
+                  <family>Sans Serif</family>
+                  <pointsize>10</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>На прямугольнике:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="minLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>Мин. инт. : 0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="maxLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>Макс. инт. : 0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="avgLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>Средн. инт. : 0</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QWidget" name="allPngIntens" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>175</width>
+               <height>90</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>175</width>
+               <height>90</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Sans Serif</family>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <underline>false</underline>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background:rgb(220,220,220);
+border:2px solid rgb(185,185,185);
+border-radius: 4px;</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QLabel" name="intTypeALL">
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>На всем изображении:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="minAllLabel">
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>П макс. инт. : 0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="maxAllLabel">
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>П мин. инт. : 0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="avgAllLabel">
+                <property name="styleSheet">
+                 <string notr="true">border:none;
+border-radius: none;</string>
+                </property>
+                <property name="text">
+                 <string>П сред. инт. : 0</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Интенсивность:</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QTextEdit" name="logTextEd">
@@ -309,6 +544,7 @@ font: 10pt &quot;Sans Serif&quot;;
     </property>
     <addaction name="loadImageMenu"/>
     <addaction name="separator"/>
+    <addaction name="openLogFile"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -320,6 +556,11 @@ font: 10pt &quot;Sans Serif&quot;;
   <action name="loadImageMenu">
    <property name="text">
     <string>Загрузить изображение</string>
+   </property>
+  </action>
+  <action name="openLogFile">
+   <property name="text">
+    <string>Открыть файл лога</string>
    </property>
   </action>
  </widget>

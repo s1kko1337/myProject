@@ -42,6 +42,11 @@
 #include <QTextEdit>
 #include <QTextStream>
 #include <QFile>
+#include <QGraphicsLineItem>
+#include <QDateTime>
+#include <QDesktopServices>
+#include <QUrl>
+
 
 namespace Ui
 {
@@ -62,6 +67,9 @@ private slots:
     void zoomOut();
     void chooseRect();
     void chooseRuler();
+    void delToolRect();
+    void delToolRuler();
+    void onOpenFileButtonClicked();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
@@ -83,17 +91,17 @@ private:
     QPointF lastPanPos;
     bool isRectTool;
     bool isRulerTool;
-    QGraphicsPathItem *selectedPath;
+    QGraphicsLineItem *selectedLine;
     QGraphicsEllipseItem *point2;
-
-
-
-
+    QGraphicsTextItem *textItem;
+    QString logFileName;
+    QString logFolderPath;
     void calculateIntens(QGraphicsRectItem *);
     bool eventFilter(QObject *, QEvent *) override;
     void displayImage(const QString &);
     void debugEvent(int);
-    void setScaleFactor(qreal scaleFactor);
+    void setScaleFactor(qreal);
+    QString getCurrentDateTime();
 };
 
 #endif // MAINWINDOW_H
