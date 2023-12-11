@@ -96,6 +96,9 @@ private:
     QGraphicsTextItem *textItem;
     QString logFileName;
     QString logFolderPath;
+
+
+    void closeEvent(QCloseEvent *event) override;
     void calculateIntens(QGraphicsRectItem *);
     bool eventFilter(QObject *, QEvent *) override;
     void displayImage(const QString &);

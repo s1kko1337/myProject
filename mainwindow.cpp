@@ -20,13 +20,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     QDir().mkpath(logFolderPath);
 
-    logFileName = logFolderPath + "/log_" + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss") + ".txt";
+    logFileName = logFolderPath + "/log_" + QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss") + ".log";
 
     logFile.setFileName(logFileName);
     if (logFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QTextStream logStream(&logFile);
-        QString logMessage = "Лог начат:";
+        QString logMessage = getCurrentDateTime()+ " " + "Лог начат:";
         logStream << logMessage << "\n";
     }
     else
@@ -177,6 +177,14 @@ void MainWindow::setScaleFactor(qreal scaleFactor)
 {
     if (isImageLoaded)
     {
+        if(scaleFactor == 1.2)
+        {
+            debugEvent(10);
+        }
+        if(scaleFactor == 0.8)
+        {
+            debugEvent(11);
+        }
         currentScaleFactor *= scaleFactor;
 
         QTransform transform;
@@ -193,6 +201,7 @@ void MainWindow::zoomIn()
 {
     qreal scaleFactor = 1.2;
     setScaleFactor(scaleFactor);
+
 }
 
 void MainWindow::zoomOut()
@@ -218,7 +227,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
             if (reply == QMessageBox::Yes)
             {
-                debugEvent(2);
+                debugEvent(0);
                 QApplication::quit();
             }
             return false;
@@ -251,7 +260,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                     {
                         QMessageBox::warning(this, "Ошибка", "Пожалуйста, загрузите изображение.");
 
-                        debugEvent(3);
+                        debugEvent(7);
                         return false;
                     }
                     if (!point1)
@@ -290,24 +299,20 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                 {
                     QMessageBox::warning(this, "Ошибка", "Пожалуйста, выберите две точки, не находящиеся в одном месте.");
 
-                    //debugEvent(6);
 
                     scene->removeItem(point1);
                     delete point1;
                     point1 = nullptr;
 
-                    //debugEvent(5);
 
                     scene->removeItem(point2);
                     delete point2;
                     point2 = nullptr;
 
-                    //debugEvent(7);
+
                     return false;
                 }
 
-
-                //debugEvent(8);
                 qreal x = qBound<qreal>(0, currPos.x(), image.width());
                 qreal y = qBound<qreal>(0, currPos.y(), image.height());
 
@@ -372,7 +377,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                 {
                     QMessageBox::warning(this, "Ошибка", "Пожалуйста, загрузите изображение.");
 
-                    debugEvent(3);
+                    debugEvent(7);
                     return false;
                 }
 
@@ -442,11 +447,10 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             if (point1 && (rHeihgt == 0 || rWidth == 0))
             {
 
-                debugEvent(5);
+                debugEvent(3);
 
                 QMessageBox::warning(this, "Ошибка", "Пожалуйста, создайте прямоугольник не являющийся линией.");
 
-                debugEvent(6);
 
                 scene->removeItem(point1);
                 delete point1;
@@ -459,19 +463,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             {
                 QMessageBox::warning(this, "Ошибка", "Пожалуйста, выберите две точки, не находящиеся на одной оси.");
 
-                debugEvent(6);
 
                 scene->removeItem(point1);
                 delete point1;
                 point1 = nullptr;
 
-                debugEvent(5);
 
                 scene->removeItem(selectedRect);
                 delete selectedRect;
                 selectedRect = nullptr;
 
-                debugEvent(7);
+                debugEvent(6);
                 return false;
             }
 
@@ -531,69 +533,104 @@ void MainWindow::debugEvent(int event)
     QTextStream logStream(&logFile);
     switch(event)
     {
+
+
+    case 0:
+    {
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: выход из приложения;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
+        logMessage = getCurrentDateTime()+ " " + "Лог завершен.";
+        logStream << logMessage << "\n";
+    }
+        break;
+
     case 1:
         if(filePathFS != nullptr)
         {
-            QString logMessage = getCurrentDateTime() + " " +"Загружено изображение: " + filePathFS;
+            QString logMessage = getCurrentDateTime() + " " + "загружено изображение: " + filePathFS;
             logStream << logMessage << "\n";
             logTextEdit->append(logMessage);
         }
         break;
+
+
     case 2:
     {
-        QString logMessage1 = getCurrentDateTime() + " " + "Действие: нажатие пкм.";
-        QString logMessage2 = getCurrentDateTime() + " " + "Действие: выход из приложения.";
-        logStream << logMessage1 << "\n" <<logMessage2<< "\n";
-        logTextEdit->append(logMessage2);
+        QString logMessage = getCurrentDateTime()+ " " + "Ошибка: нажата лкм при незагруженном изображении;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
     }
         break;
 
     case 3:
     {
-        QString logMessage3 = getCurrentDateTime()+ " " + "Ошибка: нажата лкм при незагруженном изображении.";
-        logStream << logMessage3 << "\n";
-        logTextEdit->append(logMessage3);
+        QString logMessage = getCurrentDateTime() + " " + "Ошибка: прямоугольник задан линией;";
+        logTextEdit->append(logMessage);
+        logStream << logMessage << "\n";
     }
         break;
     case 4:
     {
-        QString logMessage4 = getCurrentDateTime()+ " " + "Действие: создана центральная точка с координатами(x,y): " +
-                QString::number(point1->pos().x()) + "," +
-                QString::number(point1->pos().y());
-        logStream << logMessage4<< "\n";
-        logTextEdit->append(logMessage4);
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: использована линейка;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
     }
         break;
+
     case 5:
     {
-        QString logMessage5 = getCurrentDateTime() + " " +"Ошибка: прямоугольник задан линией";
-        logTextEdit->append(logMessage5);
-        logStream << logMessage5 << "\n";
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: использован инструмент прямоугольник;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
     }
         break;
+
     case 6:
     {
-        QString logMessage6 = getCurrentDateTime() + " " +"Действие: точка удалена";
-        logTextEdit->append(logMessage6);
-        logStream << logMessage6 << "\n";
+        QString logMessage = getCurrentDateTime() + " " + "Ошибка: точки на одной оси;";
+        logTextEdit->append(logMessage);
+        logStream << logMessage << "\n";
     }
         break;
+
     case 7:
     {
-        QString logMessage7 = getCurrentDateTime() + " " +"Действие: прямоугольник удален";
-        logTextEdit->append(logMessage7);
-        logStream << logMessage7 << "\n";
+        QString logMessage = getCurrentDateTime()+ " " + "Ошибка: использован инструмент при незагруженном изображении;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
     }
         break;
+
     case 8:
     {
-        QString logMessage = getCurrentDateTime() + " " + "Действие: создан прямоугольник с координатами(x,y) и размерами(высота, ширина): " +
-                QString::number(point1->pos().x()) + "," +
-                QString::number(point1->pos().y()) + " " +
-                QString::number(selectedRect->boundingRect().height()) + "," +
-                QString::number(selectedRect->boundingRect().width());
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: использован инструмент удаления прямоугольника;";
+        logStream << logMessage << "\n";
         logTextEdit->append(logMessage);
-        logStream << logMessage<< "\n";
+    }
+        break;
+
+    case 9:
+    {
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: использован инструмент удаления линейки;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
+    }
+        break;
+
+    case 10:
+    {
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: использован инструмент увеличения масштаба;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
+    }
+        break;
+
+    case 11:
+    {
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: использован инструмент уменьшения масштаба;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
     }
         break;
     }
@@ -609,6 +646,8 @@ void MainWindow::delToolRect()
         ui->minLabel->setText("Мин. инт. : 0");
         ui->maxLabel->setText("Макс. инт. : 0");
         ui->avgLabel->setText("Средн. инт. : 0");
+
+        debugEvent(8);
     }
 
 }
@@ -627,6 +666,24 @@ void MainWindow::delToolRuler()
 
         delete textItem;
         textItem = nullptr;
+
+        debugEvent(9);
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Выход", "Вы уверены, что хотите выйти?", QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes)
+    {
+        debugEvent(0);
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
     }
 }
 
