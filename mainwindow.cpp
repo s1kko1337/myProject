@@ -284,7 +284,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                     if (!point2)
                     {
                         point2 = new QGraphicsEllipseItem(-1.5, -1.5, 3, 3);
-                        point2->setBrush(Qt::red);
                         scene->addItem(point2);
                     }
                 }
@@ -316,6 +315,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                 qreal x = qBound<qreal>(0, currPos.x(), image.width());
                 qreal y = qBound<qreal>(0, currPos.y(), image.height());
 
+                point2->setBrush(Qt::red);
                 point2->setPos(x,y);
 
                 QPainterPath path;
