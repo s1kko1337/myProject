@@ -46,8 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->rectButton, SIGNAL(clicked()), this, SLOT(chooseRect()));
     connect(ui->delRuler, SIGNAL(clicked()), this, SLOT(delToolRuler()));
     connect(ui->delRect, SIGNAL(clicked()), this, SLOT(delToolRect()));
-}
 
+}
 MainWindow::~MainWindow()
 {
     logFile.close();
@@ -140,6 +140,23 @@ void MainWindow::displayImage(const QString &filePath)
     isImageLoaded = true;
     sceneRect = ui->graphicsView->sceneRect();
 
+    QSize rect = ui->graphicsView->size();
+    qreal rectH = rect.height();
+    qreal imgH = image.height();
+    qreal rectW = rect.width();
+    qreal imgW = image.width();
+    qreal factorH = rectH/imgH;
+    qreal factorW = rectW/imgW;
+    if(image.height()>rect.height())
+    {
+        setScale(factorH);
+    }
+    if(image.width()>rect.width())
+    {
+        setScale(factorW);
+    }
+
+
     int totalPixels = image.width() * image.height();
     int totalIntensity = 0;
     int minIntensity = 255;
@@ -171,6 +188,22 @@ void MainWindow::displayImage(const QString &filePath)
     ui->minAllLabel->setText("П мин. инт. : " + QString::number(minIntensity));
     ui->maxAllLabel->setText("П макс. инт. : " + QString::number(maxIntensity));
     ui->avgAllLabel->setText("П средн. инт. : " + QString::number(avgIntensity));
+}
+
+
+
+void MainWindow::setScale(qreal scaleFactor)
+{
+    if (isImageLoaded)
+    {
+        QTransform transform;
+
+        transform.scale(scaleFactor, scaleFactor);
+
+        ui->graphicsView->setTransform(transform);
+
+        ui->graphicsView->setSceneRect(scene->sceneRect());
+    }
 }
 
 void MainWindow::setScaleFactor(qreal scaleFactor)
@@ -213,8 +246,7 @@ void MainWindow::zoomOut()
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    Q_UNUSED(obj);
-
+    Q_UNUSED(obj)
 
     if (event->type() == QEvent::GraphicsSceneMousePress)
     {
@@ -705,3 +737,5 @@ void MainWindow::onOpenFileButtonClicked()
         qDebug() << "Некорректный путь к файлу!";
     }
 }
+
+

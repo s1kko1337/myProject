@@ -46,6 +46,7 @@
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QSize>
 
 
 namespace Ui
@@ -104,6 +105,7 @@ private:
     void displayImage(const QString &);
     void debugEvent(int);
     void setScaleFactor(qreal);
+    void setScale(qreal);
     QString getCurrentDateTime();
 };
 

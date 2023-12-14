@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.3
+** Created by: Qt User Interface Compiler version 5.15.10
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -37,16 +37,16 @@ public:
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout;
     QGraphicsView *graphicsView;
+    QFrame *verticalFrame;
     QVBoxLayout *verticalLayout;
-    QFrame *frame;
-    QVBoxLayout *verticalLayout_2;
-    QPushButton *loadImageButton;
+    QFrame *ToolFrame;
     QVBoxLayout *tools;
+    QPushButton *loadImageButton;
     QGridLayout *zoomLayout;
     QToolButton *unZoomButton;
-    QToolButton *zoomButton;
-    QLabel *zoomLabelUP;
     QLabel *zoomLabelOut;
+    QLabel *zoomLabelUP;
+    QToolButton *zoomButton;
     QVBoxLayout *mainInstruments;
     QLabel *label;
     QGridLayout *gridLayout;
@@ -54,6 +54,7 @@ public:
     QPushButton *rectButton;
     QPushButton *delRuler;
     QPushButton *delRect;
+    QFrame *BottomFrame;
     QGridLayout *mainIntens;
     QWidget *RectIntens;
     QVBoxLayout *verticalLayout_4;
@@ -76,7 +77,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(800, 600);
+        MainWindow->resize(800, 633);
         MainWindow->setMouseTracking(true);
         MainWindow->setStyleSheet(QString::fromUtf8("background:rgb(220, 220, 220);\n"
 "color: black;"));
@@ -91,6 +92,7 @@ public:
         centralwidget->setStyleSheet(QString::fromUtf8(""));
         horizontalLayout = new QHBoxLayout(centralwidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
         graphicsView = new QGraphicsView(centralwidget);
         graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -104,38 +106,35 @@ public:
 
         horizontalLayout->addWidget(graphicsView);
 
-        verticalLayout = new QVBoxLayout();
+        verticalFrame = new QFrame(centralwidget);
+        verticalFrame->setObjectName(QString::fromUtf8("verticalFrame"));
+        sizePolicy.setHeightForWidth(verticalFrame->sizePolicy().hasHeightForWidth());
+        verticalFrame->setSizePolicy(sizePolicy);
+        verticalFrame->setMaximumSize(QSize(195, 16777215));
+        verticalFrame->setStyleSheet(QString::fromUtf8("background: rgb(205, 205, 205);\n"
+"font: 9pt \"Arial\";\n"
+"border-radius:5px;"));
+        verticalFrame->setFrameShape(QFrame::NoFrame);
+        verticalFrame->setLineWidth(0);
+        verticalLayout = new QVBoxLayout(verticalFrame);
+        verticalLayout->setSpacing(7);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
-        frame = new QFrame(centralwidget);
-        frame->setObjectName(QString::fromUtf8("frame"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
-        frame->setSizePolicy(sizePolicy1);
-        frame->setMaximumSize(QSize(16777215, 16777215));
-        frame->setLayoutDirection(Qt::LeftToRight);
-        frame->setStyleSheet(QString::fromUtf8("font: 10pt \"Sans Serif\";\n"
-"border-radius:10px;\n"
-"background: rgb(205, 205, 205);\n"
-""));
-        verticalLayout_2 = new QVBoxLayout(frame);
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        loadImageButton = new QPushButton(frame);
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        ToolFrame = new QFrame(verticalFrame);
+        ToolFrame->setObjectName(QString::fromUtf8("ToolFrame"));
+        tools = new QVBoxLayout(ToolFrame);
+        tools->setObjectName(QString::fromUtf8("tools"));
+        loadImageButton = new QPushButton(ToolFrame);
         loadImageButton->setObjectName(QString::fromUtf8("loadImageButton"));
-        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(loadImageButton->sizePolicy().hasHeightForWidth());
-        loadImageButton->setSizePolicy(sizePolicy2);
+        sizePolicy.setHeightForWidth(loadImageButton->sizePolicy().hasHeightForWidth());
+        loadImageButton->setSizePolicy(sizePolicy);
+        loadImageButton->setMaximumSize(QSize(175, 28));
         QFont font;
         font.setFamily(QString::fromUtf8("Sans Serif"));
         font.setPointSize(9);
         font.setBold(false);
         font.setItalic(false);
         font.setUnderline(false);
-        font.setWeight(50);
         loadImageButton->setFont(font);
         loadImageButton->setStyleSheet(QString::fromUtf8("font: 9pt \"Sans Serif\";\n"
 "background: rgb(220, 220, 220);\n"
@@ -145,14 +144,12 @@ public:
 "\n"
 ""));
 
-        verticalLayout_2->addWidget(loadImageButton);
+        tools->addWidget(loadImageButton, 0, Qt::AlignLeft);
 
-        tools = new QVBoxLayout();
-        tools->setObjectName(QString::fromUtf8("tools"));
         zoomLayout = new QGridLayout();
         zoomLayout->setObjectName(QString::fromUtf8("zoomLayout"));
         zoomLayout->setContentsMargins(-1, 0, -1, -1);
-        unZoomButton = new QToolButton(frame);
+        unZoomButton = new QToolButton(ToolFrame);
         unZoomButton->setObjectName(QString::fromUtf8("unZoomButton"));
         unZoomButton->setMinimumSize(QSize(32, 30));
         unZoomButton->setStyleSheet(QString::fromUtf8("padding: 5px;\n"
@@ -162,7 +159,28 @@ public:
 
         zoomLayout->addWidget(unZoomButton, 1, 0, 1, 1);
 
-        zoomButton = new QToolButton(frame);
+        zoomLabelOut = new QLabel(ToolFrame);
+        zoomLabelOut->setObjectName(QString::fromUtf8("zoomLabelOut"));
+        QFont font1;
+        font1.setFamily(QString::fromUtf8("Arial"));
+        font1.setPointSize(8);
+        font1.setBold(false);
+        font1.setItalic(false);
+        zoomLabelOut->setFont(font1);
+        zoomLabelOut->setStyleSheet(QString::fromUtf8("font-size:8pt;"));
+
+        zoomLayout->addWidget(zoomLabelOut, 1, 1, 1, 1);
+
+        zoomLabelUP = new QLabel(ToolFrame);
+        zoomLabelUP->setObjectName(QString::fromUtf8("zoomLabelUP"));
+        sizePolicy.setHeightForWidth(zoomLabelUP->sizePolicy().hasHeightForWidth());
+        zoomLabelUP->setSizePolicy(sizePolicy);
+        zoomLabelUP->setFont(font1);
+        zoomLabelUP->setStyleSheet(QString::fromUtf8("font-size:8pt;"));
+
+        zoomLayout->addWidget(zoomLabelUP, 0, 1, 1, 1);
+
+        zoomButton = new QToolButton(ToolFrame);
         zoomButton->setObjectName(QString::fromUtf8("zoomButton"));
         zoomButton->setMinimumSize(QSize(32, 30));
         zoomButton->setStyleSheet(QString::fromUtf8("background:rgb(220,220,220);\n"
@@ -172,33 +190,13 @@ public:
 
         zoomLayout->addWidget(zoomButton, 0, 0, 1, 1);
 
-        zoomLabelUP = new QLabel(frame);
-        zoomLabelUP->setObjectName(QString::fromUtf8("zoomLabelUP"));
-        QFont font1;
-        font1.setFamily(QString::fromUtf8("Sans Serif"));
-        font1.setPointSize(8);
-        font1.setBold(false);
-        font1.setItalic(false);
-        font1.setWeight(50);
-        zoomLabelUP->setFont(font1);
-        zoomLabelUP->setStyleSheet(QString::fromUtf8("font-size:8pt;"));
-
-        zoomLayout->addWidget(zoomLabelUP, 0, 1, 1, 1);
-
-        zoomLabelOut = new QLabel(frame);
-        zoomLabelOut->setObjectName(QString::fromUtf8("zoomLabelOut"));
-        zoomLabelOut->setFont(font1);
-        zoomLabelOut->setStyleSheet(QString::fromUtf8("font-size:8pt;"));
-
-        zoomLayout->addWidget(zoomLabelOut, 1, 1, 1, 1);
-
 
         tools->addLayout(zoomLayout);
 
         mainInstruments = new QVBoxLayout();
         mainInstruments->setObjectName(QString::fromUtf8("mainInstruments"));
         mainInstruments->setContentsMargins(-1, 0, -1, -1);
-        label = new QLabel(frame);
+        label = new QLabel(ToolFrame);
         label->setObjectName(QString::fromUtf8("label"));
 
         mainInstruments->addWidget(label);
@@ -206,7 +204,7 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setContentsMargins(-1, 0, -1, -1);
-        rulerButton = new QPushButton(frame);
+        rulerButton = new QPushButton(ToolFrame);
         rulerButton->setObjectName(QString::fromUtf8("rulerButton"));
         rulerButton->setStyleSheet(QString::fromUtf8("background:rgb(220,220,220);\n"
 "border:2px solid rgb(185,185,185);\n"
@@ -214,7 +212,7 @@ public:
 
         gridLayout->addWidget(rulerButton, 1, 0, 1, 1);
 
-        rectButton = new QPushButton(frame);
+        rectButton = new QPushButton(ToolFrame);
         rectButton->setObjectName(QString::fromUtf8("rectButton"));
         rectButton->setStyleSheet(QString::fromUtf8("background:rgb(220,220,220);\n"
 "border:2px solid rgb(185,185,185);\n"
@@ -222,16 +220,15 @@ public:
 
         gridLayout->addWidget(rectButton, 2, 0, 1, 1);
 
-        delRuler = new QPushButton(frame);
+        delRuler = new QPushButton(ToolFrame);
         delRuler->setObjectName(QString::fromUtf8("delRuler"));
         delRuler->setMinimumSize(QSize(21, 21));
         delRuler->setMaximumSize(QSize(21, 21));
         QFont font2;
-        font2.setFamily(QString::fromUtf8("Sans Serif"));
-        font2.setPointSize(10);
+        font2.setFamily(QString::fromUtf8("Arial"));
+        font2.setPointSize(9);
         font2.setBold(false);
         font2.setItalic(false);
-        font2.setWeight(50);
         delRuler->setFont(font2);
         delRuler->setStyleSheet(QString::fromUtf8("background:rgb(220,220,220);\n"
 "border:2px solid rgb(185,185,185);\n"
@@ -239,7 +236,7 @@ public:
 
         gridLayout->addWidget(delRuler, 1, 1, 1, 1);
 
-        delRect = new QPushButton(frame);
+        delRect = new QPushButton(ToolFrame);
         delRect->setObjectName(QString::fromUtf8("delRect"));
         delRect->setMinimumSize(QSize(21, 21));
         delRect->setMaximumSize(QSize(21, 21));
@@ -258,17 +255,19 @@ public:
         tools->addLayout(mainInstruments);
 
 
-        verticalLayout_2->addLayout(tools);
+        verticalLayout->addWidget(ToolFrame, 0, Qt::AlignTop);
 
-        mainIntens = new QGridLayout();
+        BottomFrame = new QFrame(verticalFrame);
+        BottomFrame->setObjectName(QString::fromUtf8("BottomFrame"));
+        mainIntens = new QGridLayout(BottomFrame);
         mainIntens->setObjectName(QString::fromUtf8("mainIntens"));
-        mainIntens->setContentsMargins(-1, 0, -1, 0);
-        RectIntens = new QWidget(frame);
+        mainIntens->setContentsMargins(-1, 1, -1, 1);
+        RectIntens = new QWidget(BottomFrame);
         RectIntens->setObjectName(QString::fromUtf8("RectIntens"));
-        sizePolicy2.setHeightForWidth(RectIntens->sizePolicy().hasHeightForWidth());
-        RectIntens->setSizePolicy(sizePolicy2);
-        RectIntens->setMinimumSize(QSize(175, 90));
-        RectIntens->setMaximumSize(QSize(150, 90));
+        sizePolicy.setHeightForWidth(RectIntens->sizePolicy().hasHeightForWidth());
+        RectIntens->setSizePolicy(sizePolicy);
+        RectIntens->setMinimumSize(QSize(175, 100));
+        RectIntens->setMaximumSize(QSize(175, 100));
         RectIntens->setStyleSheet(QString::fromUtf8("background:rgb(220,220,220);\n"
 "border:2px solid rgb(185,185,185);\n"
 "border-radius: 4px;"));
@@ -276,6 +275,8 @@ public:
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         intTypeRECT = new QLabel(RectIntens);
         intTypeRECT->setObjectName(QString::fromUtf8("intTypeRECT"));
+        sizePolicy.setHeightForWidth(intTypeRECT->sizePolicy().hasHeightForWidth());
+        intTypeRECT->setSizePolicy(sizePolicy);
         intTypeRECT->setFont(font2);
         intTypeRECT->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
@@ -284,21 +285,19 @@ public:
 
         minLabel = new QLabel(RectIntens);
         minLabel->setObjectName(QString::fromUtf8("minLabel"));
-        QSizePolicy sizePolicy3(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(minLabel->sizePolicy().hasHeightForWidth());
-        minLabel->setSizePolicy(sizePolicy3);
+        sizePolicy.setHeightForWidth(minLabel->sizePolicy().hasHeightForWidth());
+        minLabel->setSizePolicy(sizePolicy);
         minLabel->setMinimumSize(QSize(0, 0));
+        minLabel->setMaximumSize(QSize(16777215, 1677251));
         minLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
-        verticalLayout_4->addWidget(minLabel);
+        verticalLayout_4->addWidget(minLabel, 0, Qt::AlignTop);
 
         maxLabel = new QLabel(RectIntens);
         maxLabel->setObjectName(QString::fromUtf8("maxLabel"));
-        sizePolicy3.setHeightForWidth(maxLabel->sizePolicy().hasHeightForWidth());
-        maxLabel->setSizePolicy(sizePolicy3);
+        sizePolicy.setHeightForWidth(maxLabel->sizePolicy().hasHeightForWidth());
+        maxLabel->setSizePolicy(sizePolicy);
         maxLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -306,27 +305,28 @@ public:
 
         avgLabel = new QLabel(RectIntens);
         avgLabel->setObjectName(QString::fromUtf8("avgLabel"));
-        sizePolicy3.setHeightForWidth(avgLabel->sizePolicy().hasHeightForWidth());
-        avgLabel->setSizePolicy(sizePolicy3);
+        sizePolicy.setHeightForWidth(avgLabel->sizePolicy().hasHeightForWidth());
+        avgLabel->setSizePolicy(sizePolicy);
         avgLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
         verticalLayout_4->addWidget(avgLabel);
 
 
-        mainIntens->addWidget(RectIntens, 1, 0, 1, 1);
+        mainIntens->addWidget(RectIntens, 1, 0, 1, 1, Qt::AlignTop);
 
-        allPngIntens = new QWidget(frame);
+        allPngIntens = new QWidget(BottomFrame);
         allPngIntens->setObjectName(QString::fromUtf8("allPngIntens"));
-        allPngIntens->setMinimumSize(QSize(175, 90));
-        allPngIntens->setMaximumSize(QSize(175, 90));
+        sizePolicy.setHeightForWidth(allPngIntens->sizePolicy().hasHeightForWidth());
+        allPngIntens->setSizePolicy(sizePolicy);
+        allPngIntens->setMinimumSize(QSize(175, 100));
+        allPngIntens->setMaximumSize(QSize(175, 100));
         QFont font3;
-        font3.setFamily(QString::fromUtf8("Sans Serif"));
-        font3.setPointSize(10);
+        font3.setFamily(QString::fromUtf8("Arial"));
+        font3.setPointSize(9);
         font3.setBold(false);
         font3.setItalic(false);
         font3.setUnderline(false);
-        font3.setWeight(50);
         allPngIntens->setFont(font3);
         allPngIntens->setStyleSheet(QString::fromUtf8("background:rgb(220,220,220);\n"
 "border:2px solid rgb(185,185,185);\n"
@@ -335,6 +335,8 @@ public:
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         intTypeALL = new QLabel(allPngIntens);
         intTypeALL->setObjectName(QString::fromUtf8("intTypeALL"));
+        sizePolicy.setHeightForWidth(intTypeALL->sizePolicy().hasHeightForWidth());
+        intTypeALL->setSizePolicy(sizePolicy);
         intTypeALL->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -342,6 +344,8 @@ public:
 
         minAllLabel = new QLabel(allPngIntens);
         minAllLabel->setObjectName(QString::fromUtf8("minAllLabel"));
+        sizePolicy.setHeightForWidth(minAllLabel->sizePolicy().hasHeightForWidth());
+        minAllLabel->setSizePolicy(sizePolicy);
         minAllLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -349,6 +353,8 @@ public:
 
         maxAllLabel = new QLabel(allPngIntens);
         maxAllLabel->setObjectName(QString::fromUtf8("maxAllLabel"));
+        sizePolicy.setHeightForWidth(maxAllLabel->sizePolicy().hasHeightForWidth());
+        maxAllLabel->setSizePolicy(sizePolicy);
         maxAllLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -356,23 +362,28 @@ public:
 
         avgAllLabel = new QLabel(allPngIntens);
         avgAllLabel->setObjectName(QString::fromUtf8("avgAllLabel"));
+        sizePolicy.setHeightForWidth(avgAllLabel->sizePolicy().hasHeightForWidth());
+        avgAllLabel->setSizePolicy(sizePolicy);
         avgAllLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
         verticalLayout_5->addWidget(avgAllLabel);
 
+        avgAllLabel->raise();
+        maxAllLabel->raise();
+        minAllLabel->raise();
+        intTypeALL->raise();
 
-        mainIntens->addWidget(allPngIntens, 3, 0, 1, 1);
+        mainIntens->addWidget(allPngIntens, 3, 0, 1, 1, Qt::AlignTop);
 
-        label_2 = new QLabel(frame);
+        label_2 = new QLabel(BottomFrame);
         label_2->setObjectName(QString::fromUtf8("label_2"));
+        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy);
 
         mainIntens->addWidget(label_2, 0, 0, 1, 1);
 
-
-        verticalLayout_2->addLayout(mainIntens);
-
-        logTextEd = new QTextEdit(frame);
+        logTextEd = new QTextEdit(BottomFrame);
         logTextEd->setObjectName(QString::fromUtf8("logTextEd"));
         logTextEd->setMaximumSize(QSize(175, 150));
         logTextEd->setStyleSheet(QString::fromUtf8("border:1px solid black;\n"
@@ -381,18 +392,18 @@ public:
 "color:black;\n"
 "font: 6pt \"Sans Serif\";"));
 
-        verticalLayout_2->addWidget(logTextEd);
+        mainIntens->addWidget(logTextEd, 4, 0, 1, 1);
 
 
-        verticalLayout->addWidget(frame, 0, Qt::AlignRight|Qt::AlignTop);
+        verticalLayout->addWidget(BottomFrame, 0, Qt::AlignBottom);
 
 
-        horizontalLayout->addLayout(verticalLayout);
+        horizontalLayout->addWidget(verticalFrame, 0, Qt::AlignHCenter);
 
         MainWindow->setCentralWidget(centralwidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 800, 22));
+        menuBar->setGeometry(QRect(0, 0, 800, 27));
         menuBar->setStyleSheet(QString::fromUtf8("border-bottom:2px solid rgb(205,205,205);\n"
 "font: 10pt \"Sans Serif\";\n"
 ""));
@@ -418,11 +429,11 @@ public:
         openLogFile->setText(QCoreApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273 \320\273\320\276\320\263\320\260", nullptr));
         loadImageButton->setText(QCoreApplication::translate("MainWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265", nullptr));
         unZoomButton->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
-        zoomButton->setText(QCoreApplication::translate("MainWindow", "+", nullptr));
-        zoomLabelUP->setText(QCoreApplication::translate("MainWindow", "\320\243\320\262\320\265\320\273\320\270\321\207\320\270\321\202\321\214 \320\274\320\260\321\201\321\210\321\202\320\260\320\261", nullptr));
         zoomLabelOut->setText(QCoreApplication::translate("MainWindow", "\320\243\320\274\320\265\320\275\321\214\321\210\320\270\321\202\321\214 \320\274\320\260\321\201\321\210\321\202\320\260\320\261", nullptr));
+        zoomLabelUP->setText(QCoreApplication::translate("MainWindow", "\320\243\320\262\320\265\320\273\320\270\321\207\320\270\321\202\321\214 \320\274\320\260\321\201\321\210\321\202\320\260\320\261", nullptr));
+        zoomButton->setText(QCoreApplication::translate("MainWindow", "+", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "\320\230\320\275\321\201\321\202\321\200\321\203\320\274\320\265\320\275\321\202\321\213:", nullptr));
-        rulerButton->setText(QCoreApplication::translate("MainWindow", "\320\233\320\270\320\275\320\265\320\271\320\272\320\260", nullptr));
+        rulerButton->setText(QCoreApplication::translate("MainWindow", "\320\255\320\272\321\200\320\260\320\275\320\275\320\260\321\217 \320\273\320\270\320\275\320\265\320\271\320\272\320\260", nullptr));
         rectButton->setText(QCoreApplication::translate("MainWindow", "\320\237\321\200\321\217\320\274\320\276\321\203\320\263\320\276\320\273\321\214\320\275\320\270\320\272", nullptr));
         delRuler->setText(QCoreApplication::translate("MainWindow", "x", nullptr));
         delRect->setText(QCoreApplication::translate("MainWindow", "x", nullptr));
@@ -430,7 +441,7 @@ public:
         minLabel->setText(QCoreApplication::translate("MainWindow", "\320\234\320\270\320\275. \320\270\320\275\321\202. : 0", nullptr));
         maxLabel->setText(QCoreApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201. \320\270\320\275\321\202. : 0", nullptr));
         avgLabel->setText(QCoreApplication::translate("MainWindow", "\320\241\321\200\320\265\320\264\320\275. \320\270\320\275\321\202. : 0", nullptr));
-        intTypeALL->setText(QCoreApplication::translate("MainWindow", "\320\235\320\260 \320\262\321\201\320\265\320\274 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\270:", nullptr));
+        intTypeALL->setText(QCoreApplication::translate("MainWindow", "\320\235\320\260 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\270:", nullptr));
         minAllLabel->setText(QCoreApplication::translate("MainWindow", "\320\237 \320\274\320\260\320\272\321\201. \320\270\320\275\321\202. : 0", nullptr));
         maxAllLabel->setText(QCoreApplication::translate("MainWindow", "\320\237 \320\274\320\270\320\275. \320\270\320\275\321\202. : 0", nullptr));
         avgAllLabel->setText(QCoreApplication::translate("MainWindow", "\320\237 \321\201\321\200\320\265\320\264. \320\270\320\275\321\202. : 0", nullptr));
