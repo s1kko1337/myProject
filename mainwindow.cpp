@@ -46,7 +46,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->rectButton, SIGNAL(clicked()), this, SLOT(chooseRect()));
     connect(ui->delRuler, SIGNAL(clicked()), this, SLOT(delToolRuler()));
     connect(ui->delRect, SIGNAL(clicked()), this, SLOT(delToolRect()));
-
 }
 MainWindow::~MainWindow()
 {
@@ -62,8 +61,6 @@ void MainWindow::onLoadImageButtonClicked()
     if (!filePath.isEmpty())
     {
         debugEvent(1);
-
-
         if (point1)
         {
             scene->removeItem(point1);
@@ -140,22 +137,13 @@ void MainWindow::displayImage(const QString &filePath)
     isImageLoaded = true;
     sceneRect = ui->graphicsView->sceneRect();
 
-    QSize rect = ui->graphicsView->size();
-    qreal rectH = rect.height();
-    qreal imgH = image.height();
-    qreal rectW = rect.width();
-    qreal imgW = image.width();
-    qreal factorH = rectH/imgH;
-    qreal factorW = rectW/imgW;
-    if(image.height()>rect.height())
-    {
-        setScale(factorH);
-    }
-    if(image.width()>rect.width())
-    {
-        setScale(factorW);
-    }
+    /*QSize rect = ui->graphicsView->size();
+    qreal rectH = 800;
+    qreal rectW = 600;    rect.width() = rectW;*/
 
+    //QSize size(800,600);
+    //ui->centralwidget->resize(size);
+    realTimeScaler();
 
     int totalPixels = image.width() * image.height();
     int totalIntensity = 0;
@@ -191,6 +179,28 @@ void MainWindow::displayImage(const QString &filePath)
 }
 
 
+
+void MainWindow::realTimeScaler()
+{
+    QSize rect = ui->graphicsView->size();
+    qreal rectH = rect.height()-25;
+    qreal imgH = image.height();
+    qreal rectW = rect.width()-25;
+    qreal imgW = image.width();
+    qreal factorH = rectH/imgH;
+    qreal factorW = rectW/imgW;
+    if(factorH>0&&factorW>0)
+    {
+    if(image.height()>rect.height())
+    {
+        setScale(factorH);
+    }
+    if(image.width()>rect.width())
+    {
+        setScale(factorW);
+    }
+    }
+}
 
 void MainWindow::setScale(qreal scaleFactor)
 {
@@ -247,6 +257,11 @@ void MainWindow::zoomOut()
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
+
+    if (event->type() == QEvent::Resize)
+    {
+        realTimeScaler();
+    }
 
     if (event->type() == QEvent::GraphicsSceneMousePress)
     {
@@ -737,5 +752,3 @@ void MainWindow::onOpenFileButtonClicked()
         qDebug() << "Некорректный путь к файлу!";
     }
 }
-
-

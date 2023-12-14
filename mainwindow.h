@@ -71,6 +71,7 @@ private slots:
     void delToolRect();
     void delToolRuler();
     void onOpenFileButtonClicked();
+    void realTimeScaler();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
@@ -97,7 +98,6 @@ private:
     QGraphicsTextItem *textItem;
     QString logFileName;
     QString logFolderPath;
-
 
     void closeEvent(QCloseEvent *event) override;
     void calculateIntens(QGraphicsRectItem *);
