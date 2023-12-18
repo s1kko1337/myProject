@@ -34,6 +34,7 @@ public:
     QAction *loadImageButton_2;
     QAction *loadImageMenu;
     QAction *openLogFile;
+    QAction *infoFilePass;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout;
     QGraphicsView *graphicsView;
@@ -78,6 +79,12 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(800, 633);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
+        MainWindow->setMinimumSize(QSize(800, 633));
         MainWindow->setMouseTracking(true);
         MainWindow->setStyleSheet(QString::fromUtf8("background:rgb(220, 220, 220);\n"
 "color: black;"));
@@ -87,6 +94,8 @@ public:
         loadImageMenu->setObjectName(QString::fromUtf8("loadImageMenu"));
         openLogFile = new QAction(MainWindow);
         openLogFile->setObjectName(QString::fromUtf8("openLogFile"));
+        infoFilePass = new QAction(MainWindow);
+        infoFilePass->setObjectName(QString::fromUtf8("infoFilePass"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         centralwidget->setStyleSheet(QString::fromUtf8(""));
@@ -95,11 +104,11 @@ public:
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         graphicsView = new QGraphicsView(centralwidget);
         graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(graphicsView->sizePolicy().hasHeightForWidth());
-        graphicsView->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(graphicsView->sizePolicy().hasHeightForWidth());
+        graphicsView->setSizePolicy(sizePolicy1);
         graphicsView->setStyleSheet(QString::fromUtf8("background:rgb(205,205,205);\n"
 "border-radius: 10px;\n"
 ""));
@@ -108,8 +117,8 @@ public:
 
         verticalFrame = new QFrame(centralwidget);
         verticalFrame->setObjectName(QString::fromUtf8("verticalFrame"));
-        sizePolicy.setHeightForWidth(verticalFrame->sizePolicy().hasHeightForWidth());
-        verticalFrame->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(verticalFrame->sizePolicy().hasHeightForWidth());
+        verticalFrame->setSizePolicy(sizePolicy1);
         verticalFrame->setMaximumSize(QSize(195, 16777215));
         verticalFrame->setStyleSheet(QString::fromUtf8("background: rgb(205, 205, 205);\n"
 "font: 9pt \"Arial\";\n"
@@ -126,8 +135,8 @@ public:
         tools->setObjectName(QString::fromUtf8("tools"));
         loadImageButton = new QPushButton(ToolFrame);
         loadImageButton->setObjectName(QString::fromUtf8("loadImageButton"));
-        sizePolicy.setHeightForWidth(loadImageButton->sizePolicy().hasHeightForWidth());
-        loadImageButton->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(loadImageButton->sizePolicy().hasHeightForWidth());
+        loadImageButton->setSizePolicy(sizePolicy1);
         loadImageButton->setMaximumSize(QSize(175, 28));
         QFont font;
         font.setFamily(QString::fromUtf8("Sans Serif"));
@@ -173,8 +182,8 @@ public:
 
         zoomLabelUP = new QLabel(ToolFrame);
         zoomLabelUP->setObjectName(QString::fromUtf8("zoomLabelUP"));
-        sizePolicy.setHeightForWidth(zoomLabelUP->sizePolicy().hasHeightForWidth());
-        zoomLabelUP->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(zoomLabelUP->sizePolicy().hasHeightForWidth());
+        zoomLabelUP->setSizePolicy(sizePolicy1);
         zoomLabelUP->setFont(font1);
         zoomLabelUP->setStyleSheet(QString::fromUtf8("font-size:8pt;"));
 
@@ -264,8 +273,8 @@ public:
         mainIntens->setContentsMargins(-1, 1, -1, 1);
         RectIntens = new QWidget(BottomFrame);
         RectIntens->setObjectName(QString::fromUtf8("RectIntens"));
-        sizePolicy.setHeightForWidth(RectIntens->sizePolicy().hasHeightForWidth());
-        RectIntens->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(RectIntens->sizePolicy().hasHeightForWidth());
+        RectIntens->setSizePolicy(sizePolicy1);
         RectIntens->setMinimumSize(QSize(175, 100));
         RectIntens->setMaximumSize(QSize(175, 100));
         RectIntens->setStyleSheet(QString::fromUtf8("background:rgb(220,220,220);\n"
@@ -275,8 +284,8 @@ public:
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         intTypeRECT = new QLabel(RectIntens);
         intTypeRECT->setObjectName(QString::fromUtf8("intTypeRECT"));
-        sizePolicy.setHeightForWidth(intTypeRECT->sizePolicy().hasHeightForWidth());
-        intTypeRECT->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(intTypeRECT->sizePolicy().hasHeightForWidth());
+        intTypeRECT->setSizePolicy(sizePolicy1);
         intTypeRECT->setFont(font2);
         intTypeRECT->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
@@ -285,8 +294,8 @@ public:
 
         minLabel = new QLabel(RectIntens);
         minLabel->setObjectName(QString::fromUtf8("minLabel"));
-        sizePolicy.setHeightForWidth(minLabel->sizePolicy().hasHeightForWidth());
-        minLabel->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(minLabel->sizePolicy().hasHeightForWidth());
+        minLabel->setSizePolicy(sizePolicy1);
         minLabel->setMinimumSize(QSize(0, 0));
         minLabel->setMaximumSize(QSize(16777215, 1677251));
         minLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
@@ -296,8 +305,8 @@ public:
 
         maxLabel = new QLabel(RectIntens);
         maxLabel->setObjectName(QString::fromUtf8("maxLabel"));
-        sizePolicy.setHeightForWidth(maxLabel->sizePolicy().hasHeightForWidth());
-        maxLabel->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(maxLabel->sizePolicy().hasHeightForWidth());
+        maxLabel->setSizePolicy(sizePolicy1);
         maxLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -305,8 +314,8 @@ public:
 
         avgLabel = new QLabel(RectIntens);
         avgLabel->setObjectName(QString::fromUtf8("avgLabel"));
-        sizePolicy.setHeightForWidth(avgLabel->sizePolicy().hasHeightForWidth());
-        avgLabel->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(avgLabel->sizePolicy().hasHeightForWidth());
+        avgLabel->setSizePolicy(sizePolicy1);
         avgLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -317,8 +326,8 @@ public:
 
         allPngIntens = new QWidget(BottomFrame);
         allPngIntens->setObjectName(QString::fromUtf8("allPngIntens"));
-        sizePolicy.setHeightForWidth(allPngIntens->sizePolicy().hasHeightForWidth());
-        allPngIntens->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(allPngIntens->sizePolicy().hasHeightForWidth());
+        allPngIntens->setSizePolicy(sizePolicy1);
         allPngIntens->setMinimumSize(QSize(175, 100));
         allPngIntens->setMaximumSize(QSize(175, 100));
         QFont font3;
@@ -335,8 +344,8 @@ public:
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         intTypeALL = new QLabel(allPngIntens);
         intTypeALL->setObjectName(QString::fromUtf8("intTypeALL"));
-        sizePolicy.setHeightForWidth(intTypeALL->sizePolicy().hasHeightForWidth());
-        intTypeALL->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(intTypeALL->sizePolicy().hasHeightForWidth());
+        intTypeALL->setSizePolicy(sizePolicy1);
         intTypeALL->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -344,8 +353,8 @@ public:
 
         minAllLabel = new QLabel(allPngIntens);
         minAllLabel->setObjectName(QString::fromUtf8("minAllLabel"));
-        sizePolicy.setHeightForWidth(minAllLabel->sizePolicy().hasHeightForWidth());
-        minAllLabel->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(minAllLabel->sizePolicy().hasHeightForWidth());
+        minAllLabel->setSizePolicy(sizePolicy1);
         minAllLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -353,8 +362,8 @@ public:
 
         maxAllLabel = new QLabel(allPngIntens);
         maxAllLabel->setObjectName(QString::fromUtf8("maxAllLabel"));
-        sizePolicy.setHeightForWidth(maxAllLabel->sizePolicy().hasHeightForWidth());
-        maxAllLabel->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(maxAllLabel->sizePolicy().hasHeightForWidth());
+        maxAllLabel->setSizePolicy(sizePolicy1);
         maxAllLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -362,8 +371,8 @@ public:
 
         avgAllLabel = new QLabel(allPngIntens);
         avgAllLabel->setObjectName(QString::fromUtf8("avgAllLabel"));
-        sizePolicy.setHeightForWidth(avgAllLabel->sizePolicy().hasHeightForWidth());
-        avgAllLabel->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(avgAllLabel->sizePolicy().hasHeightForWidth());
+        avgAllLabel->setSizePolicy(sizePolicy1);
         avgAllLabel->setStyleSheet(QString::fromUtf8("border:none;\n"
 "border-radius: none;"));
 
@@ -378,8 +387,8 @@ public:
 
         label_2 = new QLabel(BottomFrame);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
-        label_2->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy1);
 
         mainIntens->addWidget(label_2, 0, 0, 1, 1);
 
@@ -415,6 +424,7 @@ public:
         menu->addAction(loadImageMenu);
         menu->addSeparator();
         menu->addAction(openLogFile);
+        menu->addAction(infoFilePass);
 
         retranslateUi(MainWindow);
 
@@ -427,6 +437,7 @@ public:
         loadImageButton_2->setText(QCoreApplication::translate("MainWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265", nullptr));
         loadImageMenu->setText(QCoreApplication::translate("MainWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265", nullptr));
         openLogFile->setText(QCoreApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273 \320\273\320\276\320\263\320\260", nullptr));
+        infoFilePass->setText(QCoreApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \320\270\320\275\321\204\320\276\321\200\320\274\320\260\321\206\320\270\321\216 \320\276 \320\277\321\200\320\270\320\273\320\276\320\266\320\265\320\275\320\270\320\270", nullptr));
         loadImageButton->setText(QCoreApplication::translate("MainWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265", nullptr));
         unZoomButton->setText(QCoreApplication::translate("MainWindow", "-", nullptr));
         zoomLabelOut->setText(QCoreApplication::translate("MainWindow", "\320\243\320\274\320\265\320\275\321\214\321\210\320\270\321\202\321\214 \320\274\320\260\321\201\321\210\321\202\320\260\320\261", nullptr));

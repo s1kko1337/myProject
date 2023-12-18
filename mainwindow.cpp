@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->loadImageMenu, SIGNAL(triggered()), this, SLOT(onLoadImageButtonClicked()));
     connect(ui->openLogFile, SIGNAL(triggered()), this, SLOT(onOpenFileButtonClicked()));
     connect(ui->loadImageButton, SIGNAL(clicked()), this, SLOT(onLoadImageButtonClicked()));
+    connect(ui->infoFilePass,SIGNAL(triggered()),this,SLOT(onInfoLabelClicked()));
     connect(ui->zoomButton, SIGNAL(clicked()), this, SLOT(zoomIn()));
     connect(ui->unZoomButton, SIGNAL(clicked()), this, SLOT(zoomOut()));
     connect(ui->rulerButton, SIGNAL(clicked()), this, SLOT(chooseRuler()));
@@ -55,7 +56,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::onLoadImageButtonClicked()
 {
-    QString filePath = QFileDialog::getOpenFileName(this, "Открыть изображение", "", "Изображения (*.png *.jpg *.bmp);;Все файлы (*)");
+    QString filePath = QFileDialog::getOpenFileName(this, "Открыть изображение", "", "Изображения (*.png *.bmp);;Все файлы (*)");
     filePathFS = filePath;
 
     if (!filePath.isEmpty())
@@ -127,22 +128,8 @@ void MainWindow::displayImage(const QString &filePath)
     scene->clear();
     scene->addPixmap(QPixmap::fromImage(image));
 
-    QRectF sceneRect = ui->graphicsView->sceneRect();
-
-    while (sceneRect.width() < image.width() && sceneRect.height() < image.height()) {
-        zoomOut();
-        sceneRect = ui->graphicsView->sceneRect();
-    }
-
     isImageLoaded = true;
-    sceneRect = ui->graphicsView->sceneRect();
 
-    /*QSize rect = ui->graphicsView->size();
-    qreal rectH = 800;
-    qreal rectW = 600;    rect.width() = rectW;*/
-
-    //QSize size(800,600);
-    //ui->centralwidget->resize(size);
     realTimeScaler();
 
     int totalPixels = image.width() * image.height();
@@ -178,26 +165,25 @@ void MainWindow::displayImage(const QString &filePath)
     ui->avgAllLabel->setText("П средн. инт. : " + QString::number(avgIntensity));
 }
 
-
-
 void MainWindow::realTimeScaler()
 {
     QSize rect = ui->graphicsView->size();
-    qreal rectH = rect.height()-25;
+    qreal rectH = rect.height();
     qreal imgH = image.height();
-    qreal rectW = rect.width()-25;
+    qreal rectW = rect.width() - 25;
     qreal imgW = image.width();
     qreal factorH = rectH/imgH;
     qreal factorW = rectW/imgW;
+
     if(factorH>0&&factorW>0)
     {
-    if(image.height()>rect.height())
+    if (imgH > rectH)
     {
         setScale(factorH);
     }
-    if(image.width()>rect.width())
+    if(imgW> rectW)
     {
-        setScale(factorW);
+    setScale(factorW);
     }
     }
 }
@@ -253,7 +239,6 @@ void MainWindow::zoomOut()
     setScaleFactor(scaleFactor);
 }
 
-
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
@@ -262,7 +247,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     {
         realTimeScaler();
     }
-
     if (event->type() == QEvent::GraphicsSceneMousePress)
     {
         QGraphicsSceneMouseEvent *sceneEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
@@ -324,22 +308,13 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                     }
                 }
             }
-            else if (event->type() == QEvent::GraphicsSceneMouseMove)
-            {
-                if (isImageLoaded && point1)
-                {
-                    if (!point2)
-                    {
-                        point2 = new QGraphicsEllipseItem(-1.5, -1.5, 3, 3);
-                        scene->addItem(point2);
-                    }
-                }
-            }
-
             else if (event->type() == QEvent::GraphicsSceneMouseRelease)
             {
                 QGraphicsSceneMouseEvent *sceneEvent = static_cast<QGraphicsSceneMouseEvent*>(event);
                 QPointF currPos = sceneEvent->scenePos();
+
+                point2 = new QGraphicsEllipseItem(-1.5, -1.5, 3, 3);
+                scene->addItem(point2);
 
                 if (point1->pos() == currPos)
                 {
@@ -364,9 +339,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
                 point2->setBrush(Qt::red);
                 point2->setPos(x,y);
-
-                QPainterPath path;
-
                 selectedLine = new QGraphicsLineItem();
                 selectedLine->setLine(point1->pos().x(),point1->pos().y(),point2->pos().x(),point2->pos().y());
                 QLineF line = selectedLine->line();
@@ -540,7 +512,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     return false;
 }
 
-
 void MainWindow::calculateIntens(QGraphicsRectItem *rectItem)
 {
     if (rectItem)
@@ -572,8 +543,6 @@ void MainWindow::calculateIntens(QGraphicsRectItem *rectItem)
         return;
     }
 }
-
-
 
 void MainWindow::debugEvent(int event)
 {
@@ -680,6 +649,21 @@ void MainWindow::debugEvent(int event)
         logTextEdit->append(logMessage);
     }
         break;
+
+    case 12:
+    {
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: открыта информация о приложении;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
+    }
+        break;
+    case 13:
+    {
+        QString logMessage = getCurrentDateTime()+ " " + "Действие: открыт файл лога;";
+        logStream << logMessage << "\n";
+        logTextEdit->append(logMessage);
+    }
+    break;
     }
 }
 
@@ -734,7 +718,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-
 QString MainWindow::getCurrentDateTime()
 {
     return QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss");
@@ -746,9 +729,31 @@ void MainWindow::onOpenFileButtonClicked()
 
     QUrl fileUrl = QUrl::fromLocalFile(filePath);
 
-    if (!fileUrl.isEmpty()) {
+    if (!fileUrl.isEmpty())
+    {
         QDesktopServices::openUrl(fileUrl);
-    } else {
+        debugEvent(13);
+    }
+    else
+    {
+        qDebug() << "Некорректный путь к файлу!";
+    }
+}
+
+void MainWindow::onInfoLabelClicked()
+{
+
+    QString filePath = "info/infoClient.txt";
+
+    QUrl fileUrl = QUrl::fromLocalFile(filePath);
+
+    if (!fileUrl.isEmpty())
+    {
+        QDesktopServices::openUrl(fileUrl);
+        debugEvent(12);
+    }
+    else
+    {
         qDebug() << "Некорректный путь к файлу!";
     }
 }

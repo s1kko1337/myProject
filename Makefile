@@ -679,7 +679,7 @@ all: debug-all release-all  FORCE
 clean: debug-clean release-clean  FORCE
 distclean: debug-distclean release-distclean  FORCE
 	-$(DEL_FILE) Makefile
-	-$(DEL_FILE) C:\Users\Mike\Documents\qtProject\myProject\project_plugin_import.cpp .qmake.stash
+	-$(DEL_FILE) C:\Users\Mike\Desktop\myProject\myProject\project_plugin_import.cpp .qmake.stash
 
 debug-mocclean:
 	$(MAKE) -f $(MAKEFILE).Debug mocclean

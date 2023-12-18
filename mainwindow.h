@@ -10,44 +10,24 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QGraphicsRectItem>
-#include <QPainter>
 #include <QMouseEvent>
 #include <QGraphicsEllipseItem>
 #include <QDebug>
 #include <QGraphicsView>
 #include <QEvent>
 #include <QGraphicsPixmapItem>
-#include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QImage>
 #include <QColor>
-#include <QPainter>
-#include <QIcon>
 #include <QTabWidget>
 #include <QLabel>
-#include <QVBoxLayout>
 #include <QWidget>
-#include <QScreen>
-#include <QStatusBar>
-#include <cmath>
-#include <QMouseEvent>
-#include <QGraphicsScene>
-#include <QGraphicsWidget>
-#include <QGraphicsView>
-#include <QLabel>
-#include <QRect>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsEllipseItem>
-#include <QTextEdit>
-#include <QTextStream>
 #include <QFile>
-#include <QGraphicsLineItem>
-#include <QDateTime>
+#include <QTextEdit>
+#include <QDate>
 #include <QDesktopServices>
 #include <QUrl>
-#include <QSize>
-
 
 namespace Ui
 {
@@ -72,6 +52,7 @@ private slots:
     void delToolRuler();
     void onOpenFileButtonClicked();
     void realTimeScaler();
+    void onInfoLabelClicked();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
